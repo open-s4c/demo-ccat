@@ -1,0 +1,12 @@
+[ used ]   { shape: none; }
+[ ready ]  { shape: none; }
+[ free ]   { shape: none; }
+[ FILE ]   { shape: rounded; }
+[ STDOUT ] { shape: rounded; }
+
+[ Mediator ] -- { flow: south; } [ ready ] -> { flow: south; } [ Writer ]
+[ Reader ]   -- { flow: south; } [ used ] -> { flow: south; } [ Mediator ]
+[ Writer ]   -- { flow: east; } [ free ] -> [ Reader ]
+
+[ Writer ] => { flow: west; } [ STDOUT ]
+[ FILE ] => { flow: east; }  [ Reader ]
