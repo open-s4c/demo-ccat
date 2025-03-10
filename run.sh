@@ -58,8 +58,8 @@ fi
 rm -f $temp $output
 
 # calculate expected MD5 sum
-if [[ "$(uname -s)" = Darwin* ]] \
-|| [[ "$(uname -s)" = *BSD* ]]  then
+if [ "$(uname -s)" = Darwin* ] \
+|| [ "$(uname -s)" = *BSD* ];  then
     use_md5=true
     expected=$(md5 -q "$fn")
 else
@@ -67,7 +67,7 @@ else
 fi
 i=0
 time while [ "$i" -lt "$nit" ]; do
-    i=$(echo "$i + 1" | bc)
+    i=$(expr $i + 1)
 
     # run test program
     echo "run $i"
