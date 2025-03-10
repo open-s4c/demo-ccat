@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.28)
+project(demo-ccat LANGUAGES C)
+include_directories(../local/include)
+include_directories(../src)
+add_executable(ccat ../src/ccat.c)
+target_compile_options(ccat PRIVATE -DVATOMIC_BUILTINS)
+add_custom_target(upload ALL COMMAND powershell upload.ps1 DEPENDS ccat)
