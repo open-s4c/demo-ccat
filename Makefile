@@ -4,6 +4,10 @@ HEADERS = $(wildcard src/*.h)
 REMOTE  = "rpi:~/demo/"
 CC     ?= gcc
 
+ifeq ($(shell uname), Linux)
+CFLAGS += -D_GNU_SOURCE
+endif
+
 all: ccat bench.sc bench.opt
 
 clean:
