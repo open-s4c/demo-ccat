@@ -1,11 +1,12 @@
 # Concurrent `cat` on Raspberry
 
-Demo and slides used in [FOSDEM'25][] and [DECOMPILED'25][].  You can find the
-slides in Markdown format in `doc` directory.
+Demo and slides used in [FOSDEM'25][], [DECOMPILED'25][], and [OH@ASPLOS'25][].
+You can find the slides in Markdown format in `doc` directory.
 
 [FOSDEM'25]:
 https://fosdem.org/2025/schedule/event/fosdem-2025-6757-multicore-concurrency-algorithms-performance-correctness/
 [DECOMPILED'25]: https://decompiled.de/schedule
+[OH@ASPLOS'25]: https://openharmonyos.org/tutorial/
 
 In this demo, we construct `ccat`, a simple concurrent `cat` program that, as
 the original `cat` program, reads a file from the filesystem and writes its

@@ -1,2 +1,5 @@
 native/
 build/
+bench.opt
+bench.sc
+ccat
