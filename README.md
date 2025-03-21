@@ -1,7 +1,7 @@
 # Concurrent `cat` on Raspberry
 
 Demo and slides used in [FOSDEM'25][], [DECOMPILED'25][], and [OH@ASPLOS'25][].
-You can find the slides in Markdown format in `doc` directory.
+You can find the slides in Markdown format in `talks` directory.
 
 [FOSDEM'25]:
 https://fosdem.org/2025/schedule/event/fosdem-2025-6757-multicore-concurrency-algorithms-performance-correctness/
