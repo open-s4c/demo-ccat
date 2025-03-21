@@ -259,13 +259,13 @@ Let's decompile:
 # DOES `cat` WORK ON OPENHARMONY?
 <!-- pause -->
 
-## Specs
+## SPECS
 - Board: SCDAYU 200
 - Processor: RK3568, Cortex-A55 Quad-core
 - Operating System: OpenHarmony 5.1
 
 
-## Where to get the software?
+## WHERE TO GET THE SOFTWARE?
 - OpenHarmony SDK v5.0.1: https://gitee.com/openharmony
 - Table 2 "acquiring source code" also has pre-built archives
 
@@ -404,7 +404,7 @@ Let's build a microbenchmark with 2 threads!
 
 GenMC: https://github.com/MPI-SWS/genmc
 
-Dartagnan: https://github.com/hernanponcedeleon/Dat3M
+Dartagnan: https://github.com/hernanponcedeleon/dat3m
 <!-- pause -->
 
 ## LET'S TRY DARTAGNAN...
@@ -412,11 +412,15 @@ Dartagnan: https://github.com/hernanponcedeleon/Dat3M
 
 # TAKE AWAYS
 
+If you need barrier optimization
+
 - Correctly implementing with `stdatomic.h` (C11) is **expensive**!
 - Consider **light-weight** models as `VMM`
 
+<!-- column_layout: [1,1] -->
+<!-- column: 0 -->
 <!-- pause -->
-# VSync Atomics
+## VSYNC ATOMICS
 
 https://github.com/open-s4c/vatomic
 
@@ -430,8 +434,19 @@ If program correct on `VMM` then it is correct on
 - ARMv8 (AArch32/AArch64)
 - and RISC-V
 
-And has **fewer** barriers than with C11's memory model!
+And **fewer** barriers than with C11 memory model!
 
+<!-- column: 1 -->
+<!-- pause -->
+## HOW TO KNOW IT'S CORRECT?
+
+**Use model checkers!**
+
+GenMC: https://github.com/MPI-SWS/genmc
+
+Dartagnan: https://github.com/hernanponcedeleon/dat3m
+
+vsyncer: https://github.com/open-s4c/vsyncer
 
 <!-- end_slide -->
 
