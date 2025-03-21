@@ -1,6 +1,10 @@
 ---
 title: THE TALE OF A CONCURRENT cat WITH WEAK MEMORY
+
 sub_title: Exploring Concurrency Challenges in OpenHarmony
+event: OpenHarmony OS in System Research -- A Practical Guide
+location: ASPLOS'25/EuroSys'25 Tutorial, Rotterdam, The Netherlands
+date: 2025-03-31
 author: Diogo Behrens <diogo.behrens@huawei.com>
 theme:
   name: catppuccin-latte
@@ -161,14 +165,6 @@ int ringbuf_deq(ringbuf_t* q, void** v) {
 ## WILL THIS WORK?
 
 <!-- end_slide -->
-
-
-![image:width:100%](monalisa-2x.jpg)
-![image:width:100%](../../assets/monalisa.jpg)
-
-
-
-<!-- end_slide -->
 <!-- column_layout: [1,16,1] -->
 <!-- column: 1 -->
 
@@ -181,17 +177,17 @@ Let's use our `ccat` implemenation to pipe into `viu` an image of Monalisa:
 
 ## EXPECTED RESULT
 
-![image:width:100%](monalisa-2x.jpg)
+![image:width:100%](../../assets/monalisa.jpg)
 
 <!-- column: 2 -->
 ## ACTUAL RESULT
 
 ![image:width:100%](../../assets/broken.jpg)
-<!-- column_layout: [1,14,1] -->
-<!-- column: 1 -->
+<!-- reset_layout -->
 
-- `viu`: https://github.com/atanunq/viu
-- https://upload.wikimedia.org/wikipedia/commons/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg
+`viu`: https://github.com/atanunq/viu
+
+<!-- speaker_note: https://upload.wikimedia.org/wikipedia/commons/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg -->
 
 <!-- end_slide -->
 ## WHAT'S THE PROBLEM?
@@ -223,7 +219,7 @@ gdb --args ./ccat assets/monalisa.jpg
 Use `layout asm` to see where the threads are stuck. You should
 see a thread at a `jmp` instruction.
 
-Let's **DECOMPILE**:
+Let's decompile:
 
 ```asm
 │   0x400d4c <mediator+108> test   %r10,%r10
@@ -260,10 +256,9 @@ Let's **DECOMPILE**:
 
 >
 
-## DOES `cat` WORK ON OPENHARMONY?
+# DOES `cat` WORK ON OPENHARMONY?
 <!-- pause -->
-<!-- column_layout: [3,3] -->
-<!-- column: 0 -->
+
 ## Specs
 - Board: SCDAYU 200
 - Processor: RK3568, Cortex-A55 Quad-core
@@ -271,32 +266,33 @@ Let's **DECOMPILE**:
 
 
 ## Where to get the software?
-- OpenHarmony SDK: https://gitee.com/openharmony/docs/blob/master/en/release-notes/OpenHarmony-v5.0.1-release.md
+- OpenHarmony SDK v5.0.1: https://gitee.com/openharmony
 - Table 2 "acquiring source code" also has pre-built archives
 
-<!-- column: 1 -->
+<!--
+https://gitee.com/openharmony/docs/blob/master/en/release-notes/OpenHarmony-v5.0.1-release.md
 ```
-█████████████████████████████████████
-██ ▄▄▄▄▄ ██▀▀▄▄▄▀ █▀  ▄ █ ▀█ ▄▄▄▄▄ ██
-██ █   █ █▀███ █▀█▀▄█ ▄▀▄█▄█ █   █ ██
-██ █▄▄▄█ █▄▄█▀▀█▀▀██▄▀████▀█ █▄▄▄█ ██
-██▄▄▄▄▄▄▄█▄█ ▀▄▀▄█▄█▄█ ▀▄▀ █▄▄▄▄▄▄▄██
-██▄▄██▀▄▄ █ █▄▀ ▄ ▀█▄▀▄█▀▀█▀▀▀  █▀███
-██ ▄ ▀▀▄▄ ▀▀▄█▀ █▀▀███▀▄▀▄▄█▄█▄ ▄█▀██
-██▀█▄▀▄█▄▀▀▄█▄▄▀█▀█ ▄▄▄▀▄ ▀  ▄▀█ █▄██
-██▄█ ▀ ▀▄█▀ ▀ ▄▄▄ █   ▄█▀▀█▄ ▄ ▀█ ▀██
-███ ▀▄▀▄▄▀▀▀ ▄▀██  █▀▄▄▄▄▄  ▄▄ █▀▄▀██
-██▀█▀▄ ▄▄██ ▀▄▀▀█▄█ ▄▀▄▀▀▀▀▀▄▄ ▄██ ██
-██▀██▀ ▄▄█▀█ █▄█▀  ▄▀▀▄  ▀ █ ██▀▀█▄██
-██ ███▀▄▄▄▀▀▄ ▄██▀▄ ▀ ▀▀▄▄ ▀▄▄█▀▄▀▄██
-██▄▄▄▄▄▄▄█ ▄▀█▀ ▄  ▀ █ ▄█  ▄▄▄ ▄█  ██
-██ ▄▄▄▄▄ █ ▀▄█▀  █▄█▀ ▄██▄ █▄█ ███▄██
-██ █   █ ██▄██▄█▄  ▀▀ ▀▀▄▀   ▄▄█ ▄ ██
-██ █▄▄▄█ █▀█▀▀▄▄ ▄ ▀█▀▄  ▀ █▀█ █ ▄ ██
-██▄▄▄▄▄▄▄█▄▄█▄███▄███▄▄▄█████▄▄▄▄████
-█████████████████████████████████████
+ █▀▀▀▀▀█ ▄█ ▄▄ ▄▄▀▀█ ▀▀▀▀ ▄ ▄█ █▀▀▀▀▀█
+ █ ███ █ ▄█▀█ ▄█▀▀▄▀█▀▀▄█▄▄█ ▀ █ ███ █
+ █ ▀▀▀ █ ▄ █ ▀  ▄█ █▀██▄▀█▄▀▄▀ █ ▀▀▀ █
+ ▀▀▀▀▀▀▀ ▀ ▀ █ █▄█ ▀ █▄█▄▀ █▄█ ▀▀▀▀▀▀▀
+ ▀▀▀█▀▄▀▀▀█▀ ▀▀█▀▄▀ ▄▄ ▀█▀█ ▀▄▀ █ █▄█
+ ▄▀ █  ▀ █▀ █▀▀▄▀ ▀█  █▀  ▀█▀██ ███▀▄▀
+ ▄█▀█▀ ▀▄█  ▀▄▀▀▀██▄▄█▄▀▄▀▀▀  █▀ ▀▀█▄▀
+ ▀▀ ▀ ▄▀█▄ ▀ ▄ ███  ▄███▄ ▀ █▀ ██▄▄▀▀█
+ █  ▀▀█▀ ▀▀█ ▀█   █▄▀▄▄▀███▀ █▀▀▄▀▀█▄▀
+  █▀▀█▀▀▀   █▀▀▀█▀▀ ▄██▄▄█ ▀▀▄████ ▀▀█
+ ▀ █   ▀██ ▄▀▄█▀▀▀█▄█ ▄█▄ █▀ ▄▀▀▄▀▀▀█▀
+     ██▀ █ ▀ ▄ █▀▄▀▄▄▀▄▄  ▀█▀█▀ ▀▀ ▀▀█
+ █ ▀▄ ▀▀ ▄██ ▀▀▀  █ ▄█▄▀▄▀▀▀ ▄▀▀▄▀███▀
+ █ ▀▄▀▀▀▄▄▄▀█▀ ▀█  ▀ ███ ▀▀ ██ ▄▄█  ▀█
+ ▀  ▀▀ ▀ ▄██▀▄▄ ▀▀██▄▄  ▄ █ ▄█▀▀▀█ ▀
+ █▀▀▀▀▀█ ▀▀█ ▄█▀▀▄   ▄██▄▄▀█ █ ▀ █▀ ██
+ █ ███ █ █▄█ ▀ ▀  ▀ ▄█ ▀▄ █▀████▀█▀▀█▄
+ █ ▀▀▀ █ █▀▀█▀ ▄██▀▄▄█▄▀ ▄ █▀▄ ▄▄   ▀█
+ ▀▀▀▀▀▀▀ ▀ ▀▀   ▀▀▀▀▀  ▀ ▀▀▀  ▀▀▀ ▀▀▀▀
 ```
-
+-->
 <!-- end_slide -->
 
 # ISSUE 3: RINGBUFFER FAILS ON WEAK MEMORY
@@ -319,7 +315,7 @@ barriers** to disable hardware (and compiler) optimizations.
 
 <!-- reset_layout -->
 
-We will atomics from https://github.com/open-s4c/libvsync.
+We will use `vatomic` package: https://github.com/open-s4c/vatomic.
 
 By default, atomic operations have the strongest memory barrier (seq_cst),
 which disables all optimizations, but **can be slow**.
@@ -368,33 +364,39 @@ Let's build a microbenchmark with 2 threads!
 ## TOO STRONG 💪 BARRIERS ----> SLOW 🐢 CODE
 
 <!-- end_slide -->
+
 <!-- column_layout: [1,1] -->
 <!-- column: 0 -->
 
-# GUIDELINE FOR DEVELOPING LOW-LEVEL CONCURRENT CODE
+# DEVELOPING LOW-LEVEL CONCURRENT CODE
 
 ## NEED A CONCURRENT DATASTRUCTURE?
 - Use some **safe library**!
 - Such libraries do exist:
   https://github.com/open-s4c/libvsync
 
+<!-- pause -->
+
 ## REALLY NEED TO WRITE YOURSELF?
 1. Use **atomic operations on every racy access**
     - Even on simple reads and writes
-2. Use the **strongest barriers** on these operations
-    - Default for `vatomic` and C11
-3. Check correctness (mostly) ignoring weak memory
+2. Use the **strongest barriers**
+    - Default in `vatomic` and `stdatomic.h`
+3. Check correctness (mostly) ignoring WMM
 4. Relax
 
-<!-- column: 1 -->
 <!-- pause -->
 
-# GUIDELINE FOR OPTIMIZING MEMORY BARRIERS
+<!-- column: 1 -->
+
+# OPTIMIZING MEMORY BARRIERS
 
 ## NEED TO OPTIMIZE MEMORY BARRIERS?
 - Use a **tool** to optimize for you!
 - Such tools do exist:
   https://github.com/open-s4c/vsyncer
+
+<!-- pause -->
 
 ## REALLY NEED TO OPTIMIZE YOURSELF?
 - Use a **tool** to check correctness on WMM!
@@ -410,14 +412,29 @@ Dartagnan: https://github.com/hernanponcedeleon/Dat3M
 
 # TAKE AWAYS
 
-- Correctly implementing for C11 is expensive
-- Consider light-weight models such as VMM
-    - Ensures correctness for TSO, ARMv7, ARMv8(AArch32/AArch64)
+- Correctly implementing with `stdatomic.h` (C11) is **expensive**!
+- Consider **light-weight** models as `VMM`
+
+<!-- pause -->
+# VSync Atomics
+
+https://github.com/open-s4c/vatomic
+
+It contains:
+- Atomics implementation (`vatomic`)
+- VSync Memory Model (`VMM`)
+
+If program correct on `VMM` then it is correct on
+- TSO
+- ARMv7
+- ARMv8 (AArch32/AArch64)
+- and RISC-V
+
+And has **fewer** barriers than with C11's memory model!
 
 
 <!-- end_slide -->
 
->
 
 >
 
@@ -425,40 +442,38 @@ Dartagnan: https://github.com/hernanponcedeleon/Dat3M
 
 >
 
+>
 
+
+<!-- column_layout: [1,1] -->
+<!-- column: 0 -->
 ## THANK YOU 🙏
 
+
+If you like these topics, come talk with me...
+
 >
 
--> Come talk with me, *we are hiring*!
-
->
-
-
-### CONTANT
+## CONTACT
 
 - 📭 diogo.behrens@huawei.com
 - 🌐 https://github.com/open-s4c
 
-<!--
+
+<!-- column: 1 -->
 ```
-
-
-          █▀▀▀▀▀█ █▀▀█  █ ▄ █▀▀▀▀▀█
-          █ ███ █  ▀ ▄ █ ▄  █ ██ █
-          █ ▀▀▀ █ █▄▄▀▀▄█ ▄ █ ▀▀▀ █
-          ▀▀▀▀▀▀▀ █▄▀▄▀ █▄▀ ▀▀▀▀▀▀▀
-          ▀█▀▄ █▀ ▀  ▀▄ ██▀██▀▄ ██
-           ▀█▄  ▀ ▀▀██  ▄███ ▄ █▀ ▀
-           ▄ █ █▀▄▀▀███ ▄▄▀▄██   ▄█
-          ▀ █▀▄▀█▀ ▀▀█▀▀█▀ ▀▄▄█▀ ▀
-          ▀▀▀   ▀▀█ ▀█   ▀█▀▀▀█  ▀▄
-          █▀▀▀▀▀█ ▄▀▄█ ▀▄▄█  █   ▀
-          █ ███ █  █ █▄▄ █▀█▀▀█ ▄▄
-          █ ▀▀▀ █ █▀ ▀▄  ▄█▀▄██▀ ▀▀
-          ▀▀▀▀▀▀▀ ▀▀  ▀ ▀ ▀▀▀  ▀  ▀
-
-
+ █▀▀▀▀▀█ ▀▄▄▀▀▄▀ ▄ █▀▀▀▀▀█
+ █ ███ █   ▀ ███▄▄ █ ███ █
+ █ ▀▀▀ █  ▀▄▀▄██ ▀ █ ▀▀▀ █
+ ▀▀▀▀▀▀▀ █ █▄▀▄▀▄▀ ▀▀▀▀▀▀▀
+ ▀▀ ▀█ ▀ ▄█▀▀█▄██▀ ▀▄▄▄▄▄▀
+ █ ▀▄▀ ▀██▄█▀▄▀▄█ ▀▄█ █▄▄█
+ ██▄█▄ ▀▄ █ █▀▄ ▄▀▄▀▀▄  ▄▀
+ █▀▄  ▄▀▀▀██ ▀▀▄██▀█▄▀██▀█
+ ▀ ▀   ▀ ▄█ ▀▄▀ ▀█▀▀▀█ ██
+ █▀▀▀▀▀█  ▄▄█▄█ ▄█ ▀ █  ▄▀
+ █ ███ █ ██▀▄ ▄█████▀▀  ▄▄
+ █ ▀▀▀ █ ▄▀██ ▀ ▄ █ ▄█▀███
+ ▀▀▀▀▀▀▀ ▀   ▀ ▀ ▀▀▀  ▀  ▀
 ```
--->
 
