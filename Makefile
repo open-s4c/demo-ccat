@@ -11,7 +11,7 @@ endif
 all: ccat bench.sc bench.opt
 
 clean:
-	rm -rf ccat bench.* *.ll src/*.ll *.jpg *.core
+	rm -rf ccat bench.* *.ll src/*.ll *.jpg *.core output
 
 ccat: src/ccat.c $(HEADERS)
 	$(CC) $(CFLAGS) -o $@ $<

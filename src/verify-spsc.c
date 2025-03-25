@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <vsync/atomic.h>
 #include <vsync/common/await_while.h>
+#include <stdlib.h>
 
 #include "ringbuf.h"
 

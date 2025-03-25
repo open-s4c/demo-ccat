@@ -51,7 +51,7 @@ https://upload.wikimedia.org/wikipedia/commons/e/ec/Mona_Lisa%2C_by_Leonardo_da_
 Now, you can run `scripts/run.sh assets/monalisa.jpg`. In a few seconds, a
 different pair of figures should appear.
 
-### Issue 1: Ring buffer does not support multiple threads
+## Issue 1: Ring buffer does not support multiple threads
 
 Initially, `ccat` is using a version of the ring buffer that is implemented for
 single threads. One can inspect the file `ringbuf.h` and try to fix it. On every
@@ -63,7 +63,7 @@ this file instead of `ringbuf.h`. This implementation should work on x86
 machines, and the script will terminate after a number of iterations without
 reporting errors.
 
-### Issue 2: Ring buffer does not work with `-O3`
+## Issue 2: Ring buffer does not work with `-O3`
 
 Running our script, you most likely won't see any issues. Now, change the
 `Makefile` to use `-O3`. This time, when running the script, you are very likely
@@ -80,7 +80,7 @@ variables. See `ringbuf_spsc_volatile.h`. Nevertheless, this is not recommended.
 As we will see in the next issue, the correct solution is to use atomic
 variables.
 
-### Issue 3: Ring buffer does not work on weak memory
+## Issue 3: Ring buffer does not work on weak memory
 
 If you have access to some machine with weak memory consistency such as a
 Raspberry Pi 4, you can try running `ccat` with `ringbuf_spsc_plain.h`.
@@ -101,7 +101,7 @@ contains the same implementation but now using atomic operations from
 atomic operation has the strongest memory ordering (seq_cst) by default, which
 disables all relevant hardware optimizations.
 
-### Issue 4: The barriers are too strong
+## Issue 4: The barriers are too strong
 
 The resulting code uses the strongest barriers on every racy access. How to
 optimize this code (relaxing barriers), without breaking its correctness?
@@ -109,7 +109,17 @@ optimize this code (relaxing barriers), without breaking its correctness?
 You can try running `bench.sc` and `bench.opt` to compare the performance of
 the queues on your hardware.
 
+## Verifying the code
+
 Checkout our [vsyncer][] project to perform this optimization automatically
 while verifying the code correctness.
 
+To try yourself, install [Dartagnan][] and start verifying `src/verify-spsc.c`:
+
+```
+env CFLAGS=-Isrc \
+    dartagnan -cat vmm src/verify-spsc.c
+```
+
 [vsyncer]: https://github.com/open-s4c/vsyncer
+[Dartagnan]: https://github.com/hernanponcedeleon/Dat3M
