@@ -1,12 +1,8 @@
-CFLAGS  = -Ilocal/include -O0 -g -lpthread
-CFLAGS += -Wall -Werror -DSET_CPU_AFFINITY
-HEADERS = $(wildcard src/*.h)
-REMOTE  = "rpi:~/demo/"
-CC     ?= gcc
-
-ifeq ($(shell uname), Linux)
-CFLAGS += -D_GNU_SOURCE
-endif
+CC=		gcc
+CFLAGS+=	-Ilocal/include -O0 -g -lpthread
+CFLAGS+=	-Wall -Werror -DSET_CPU_AFFINITY
+HEADERS!=	ls src/*.h
+REMOTE=		"rpi:~/demo/"
 
 all: ccat bench.sc bench.opt
 

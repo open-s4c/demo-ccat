@@ -58,8 +58,7 @@ fi
 rm -f $temp $output
 
 # calculate expected MD5 sum
-if [ "$(uname -s)" = Darwin* ] \
-|| [ "$(uname -s)" = *BSD* ];  then
+if [ "$(uname -s)" = Darwin ] || [ "$(uname -s)" = NetBSD ];  then
     use_md5=true
     expected=$(md5 -q "$fn")
 else
