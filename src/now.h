@@ -11,10 +11,10 @@
 
 typedef uint64_t nanosec_t;
 
-#define NOW_NANOSECOND  ((nanosec_t)1)
+#define NOW_NANOSECOND ((nanosec_t)1)
 #define NOW_MICROSECOND (1000 * NOW_NANOSECOND)
 #define NOW_MILLISECOND (1000 * NOW_MICROSECOND)
-#define NOW_SECOND      (1000 * NOW_MILLISECOND)
+#define NOW_SECOND (1000 * NOW_MILLISECOND)
 
 static inline nanosec_t
 now(void)
@@ -26,9 +26,9 @@ now(void)
         exit(EXIT_FAILURE);
     }
 
-    const nanosec_t seconds_ns     = ((nanosec_t)ts.tv_sec) * NOW_SECOND;
+    const nanosec_t seconds_ns = ((nanosec_t)ts.tv_sec) * NOW_SECOND;
     const nanosec_t nanoseconds_ns = (nanosec_t)ts.tv_nsec;
-    const nanosec_t result_ns      = seconds_ns + nanoseconds_ns;
+    const nanosec_t result_ns = seconds_ns + nanoseconds_ns;
 
     return result_ns;
 }
@@ -42,8 +42,8 @@ in_sec(nanosec_t ts)
 static inline struct timespec
 to_timespec(nanosec_t ts)
 {
-    return (struct timespec){
-        .tv_sec  = ts / NOW_SECOND,
+    return (struct timespec) {
+        .tv_sec = ts / NOW_SECOND,
         .tv_nsec = ts % NOW_SECOND,
     };
 }

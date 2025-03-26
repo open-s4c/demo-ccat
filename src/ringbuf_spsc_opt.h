@@ -7,9 +7,9 @@
 
 #include <vsync/atomic.h>
 
-#define RINGBUF_OK    0
+#define RINGBUF_OK 0
 #define RINGBUF_EMPTY 1
-#define RINGBUF_FULL  2
+#define RINGBUF_FULL 2
 #define RINGBUF_AGAIN 3
 
 typedef struct {
@@ -22,7 +22,7 @@ typedef struct {
 static inline void
 ringbuf_init(ringbuf_t *q, void **b, unsigned int s)
 {
-    q->buf  = b;
+    q->buf = b;
     q->size = s;
     vatomic32_init(&q->head, 0);
     vatomic32_init(&q->tail, 0);

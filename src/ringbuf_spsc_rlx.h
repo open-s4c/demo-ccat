@@ -13,14 +13,14 @@
 #define RINGBUF_AGAIN 3
 
 typedef struct {
-    void** buf;
+    void **buf;
     vatomic32_t head;
     vatomic32_t tail;
     unsigned int size;
 } ringbuf_t;
 
 static inline void
-ringbuf_init(ringbuf_t* q, void** b, unsigned int s)
+ringbuf_init(ringbuf_t *q, void **b, unsigned int s)
 {
     q->buf = b;
     q->size = s;
@@ -29,7 +29,7 @@ ringbuf_init(ringbuf_t* q, void** b, unsigned int s)
 }
 
 static inline int
-ringbuf_enq(ringbuf_t* q, void* v)
+ringbuf_enq(ringbuf_t *q, void *v)
 {
     unsigned int tail = vatomic32_read_rlx(&q->tail);
     unsigned int head = vatomic32_read_rlx(&q->head);
@@ -45,7 +45,7 @@ ringbuf_enq(ringbuf_t* q, void* v)
 }
 
 static inline int
-ringbuf_deq(ringbuf_t* q, void** v)
+ringbuf_deq(ringbuf_t *q, void **v)
 {
     unsigned int head = vatomic32_read_rlx(&q->head);
     unsigned int tail = vatomic32_read_rlx(&q->tail);

@@ -1,0 +1,5 @@
+BasedOnStyle: WebKit
+ColumnLimit: 80
+IndentWidth: 4
+PointerAlignment: Right
+AlwaysBreakAfterReturnType: TopLevelDefinitions

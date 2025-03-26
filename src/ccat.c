@@ -10,13 +10,13 @@
 #include <string.h>
 #include <unistd.h>
 
-#define PAGE_SIZE  4096
+#define PAGE_SIZE 4096
 #define CHUNK_SIZE 256
-#define FREE_LEN   64
-#define RBUF_LEN   16
-#define pause()    // asm __volatile__("" ::: "memory")
+#define FREE_LEN 64
+#define RBUF_LEN 16
+#define pause()
 
-#include "ringbuf.h"
+#include "ringbuf_spsc_sc.h"
 
 struct chunk {
     char payload[CHUNK_SIZE];
@@ -81,7 +81,7 @@ void *
 mediator(void *arg)
 {
     struct chunk *c = NULL;
-    bool stop       = false;
+    bool stop = false;
 
     while (!stop) {
         /* get chunk from reader */
@@ -103,7 +103,7 @@ void *
 writer(void *arg)
 {
     struct chunk *c = NULL;
-    bool stop       = false;
+    bool stop = false;
 
     while (!stop) {
         /* get chunk ready to be written */
@@ -115,7 +115,6 @@ writer(void *arg)
             stop = true;
         else /* write chunk out */
             fwrite(c->payload, c->len, 1, stdout);
-
 
         /* give chunk ownership back to reader */
         while (ringbuf_enq(&free_chunks, c) != RINGBUF_OK)

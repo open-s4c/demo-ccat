@@ -17,13 +17,13 @@
 #include "now.h"
 
 #ifdef OPTIMIZED
-    #include "ringbuf_spsc_opt.h"
+#include "ringbuf_spsc_opt.h"
 #else
-    #include "ringbuf_spsc_sc.h"
+#include "ringbuf_spsc_sc.h"
 #endif
 
 #define CHUNK_SIZE 4
-#define RBUF_SIZE  16
+#define RBUF_SIZE 16
 #define pause()                                                                \
     if (vatomic32_read_rlx(&stop))                                             \
         return 0;
@@ -92,10 +92,10 @@ int
 main(int argc, char *argv[])
 {
     set_cpu(3);
-    int period   = 10;
+    int period = 10;
     size_t bsize = sizeof(void *) * RBUF_SIZE;
-    void *buf1   = malloc(bsize);
-    void *buf2   = malloc(bsize);
+    void *buf1 = malloc(bsize);
+    void *buf2 = malloc(bsize);
     if (!buf1 || !buf2) {
         perror("buffer malloc");
         exit(EXIT_FAILURE);
@@ -129,7 +129,6 @@ main(int argc, char *argv[])
     return 0;
 }
 
-
 #ifndef SET_CPU_AFFINITY
 
 void
@@ -140,11 +139,11 @@ set_cpu(int id)
 
 #elif defined(__linux__)
 
-    #if !defined(_GNU_SOURCE)
-        #error add "-D_GNU_SOURCE" to your compile command
-    #endif
-    #include <sched.h>
-    #include <sys/sysinfo.h>
+#if !defined(_GNU_SOURCE)
+#error add "-D_GNU_SOURCE" to your compile command
+#endif
+#include <sched.h>
+#include <sys/sysinfo.h>
 void
 set_cpu(int id)
 {
@@ -166,7 +165,7 @@ set_cpu(int id)
     pthread_t pth;
     cpuset_t *cset;
     cpuid_t ci = (cpuid_t)id;
-    cset       = cpuset_create();
+    cset = cpuset_create();
     if (cset == NULL) {
         perror("cpuset_create");
         exit(EXIT_FAILURE);

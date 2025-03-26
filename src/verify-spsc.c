@@ -6,9 +6,9 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <vsync/atomic.h>
 #include <vsync/common/await_while.h>
-#include <stdlib.h>
 
 #include "ringbuf.h"
 
@@ -21,17 +21,18 @@ struct data {
     int recv;
 };
 
-void* buf[RBUF_SIZE];
+void *buf[RBUF_SIZE];
 ringbuf_t rb;
 
 struct data data_items[TOTAL];
 
-void* producer(void* arg)
+static void *
+producer(void *arg)
 {
     int id = (int)(uintptr_t)arg;
 
     for (int i = 0; i < VALUES; i++) {
-        struct data* d = &data_items[i];
+        struct data *d = &data_items[i];
         d->sent = true;
         await_while(ringbuf_enq(&rb, d) != RINGBUF_OK);
     }
@@ -39,18 +40,20 @@ void* producer(void* arg)
 }
 
 vatomic32_t recv_count;
-void* consumer(void* arg)
+void *
+consumer(void *arg)
 {
     for (int i = 0; i < TOTAL; i++) {
-        struct data* d = NULL;
-        await_while(ringbuf_deq(&rb, (void**)&d) != RINGBUF_OK);
+        struct data *d = NULL;
+        await_while(ringbuf_deq(&rb, (void **)&d) != RINGBUF_OK);
         assert(d->sent);
         d->recv = true;
     }
     return 0;
 }
 
-int main(void)
+int
+main(void)
 {
     ringbuf_init(&rb, buf, RBUF_SIZE);
 
