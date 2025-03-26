@@ -2,8 +2,8 @@
 title: THE TALE OF A CONCURRENT cat WITH WEAK MEMORY
 
 sub_title: Exploring Concurrency Challenges in OpenHarmony
-event: OpenHarmony OS in System Research -- A Practical Guide
-location: ASPLOS'25/EuroSys'25 Tutorial, Rotterdam, The Netherlands
+event: OpenHarmony OS Tutorial @ ASPLOS'25/EuroSys'25
+location: Rotterdam, The Netherlands
 date: 2025-03-31
 author: Diogo Behrens <diogo.behrens@huawei.com>
 theme:
@@ -132,11 +132,11 @@ do { /* read large portion of data */
 ## THREE OPTIONS
 1. use big lock, but that allows *no concurrency*
 2. *carefully think* and implement a concurrent algorithm
-3. hope for the best and *just use try it*!
+3. use the code we have and *hope for the best*
 
 <!-- pause -->
 
-## LET'S GO WITH OPTION 3!
+## THINKING HURTS, LET'S GO WITH OPTION 3!
 
 ```c
 typedef struct {
@@ -163,31 +163,41 @@ int ringbuf_deq(ringbuf_t* q, void** v) {
 <!-- pause -->
 
 ## WILL THIS WORK?
-
 <!-- end_slide -->
 <!-- column_layout: [1,16,1] -->
 <!-- column: 1 -->
-
 # FIRST TRY: `./ccat assets/monalisa.jpg | viu -`
 
 Let's use our `ccat` implemenation to pipe into `viu` an image of Monalisa:
 
+>
+
+>
 <!-- column_layout: [1,8,8,1] -->
 <!-- column: 1 -->
 
 ## EXPECTED RESULT
 
-![image:width:100%](../../assets/monalisa.jpg)
+![image:width:90%](../../assets/monalisa.jpg)
 
 <!-- column: 2 -->
 ## ACTUAL RESULT
 
-![image:width:100%](../../assets/broken.jpg)
-<!-- reset_layout -->
+![image:width:90%](../../assets/broken.jpg)
+
+<!-- column_layout: [1,16,1] -->
+<!-- column: 1 -->
 
 `viu`: https://github.com/atanunq/viu
 
-<!-- speaker_note: https://upload.wikimedia.org/wikipedia/commons/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg -->
+<!-- speaker_note:
+
+https://upload.wikimedia.org/wikipedia/commons/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg
+
+
+
+-->
+
 
 <!-- end_slide -->
 ## WHAT'S THE PROBLEM?
@@ -402,9 +412,11 @@ Let's build a microbenchmark with 2 threads!
 - Use a **tool** to check correctness on WMM!
 - Yeah, such tools do exist:
 
-GenMC: https://github.com/MPI-SWS/genmc
+> **GenMC**:
+>  https://github.com/MPI-SWS/genmc
 
-Dartagnan: https://github.com/hernanponcedeleon/dat3m
+> **Dartagnan**:
+>  https://github.com/hernanponcedeleon/dat3m
 <!-- pause -->
 
 ## LET'S TRY DARTAGNAN...
