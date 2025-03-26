@@ -32,7 +32,7 @@ static inline int
 ringbuf_enq(ringbuf_t *q, void *v)
 {
     unsigned int tail = vatomic32_read_rlx(&q->tail);
-    unsigned int head = vatomic32_read_acq(&q->head);
+    unsigned int head = vatomic32_read_rlx(&q->head);
 
     if (tail - head == q->size)
         return RINGBUF_FULL;
