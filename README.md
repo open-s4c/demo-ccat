@@ -114,11 +114,11 @@ the queues on your hardware.
 Checkout our [vsyncer][] project to perform this optimization automatically
 while verifying the code correctness.
 
-To try yourself, install [Dartagnan][] and start verifying `src/verify-spsc.c`:
+To try yourself, install [Dartagnan][] and start by verifying `verify-spsc.c`:
 
 ```
-env CFLAGS=-Isrc \
-    dartagnan -cat vmm src/verify-spsc.c
+source verify/env.sh
+dartagnan -cat vmm verify/ringbuf_spsc-check.c
 ```
 
 [vsyncer]: https://github.com/open-s4c/vsyncer
