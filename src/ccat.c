@@ -16,7 +16,7 @@
 #define RBUF_LEN 16
 #define pause()
 
-#include "ringbuf_spsc_sc.h"
+#include "ringbuf.h"
 
 struct chunk {
     char payload[CHUNK_SIZE];
