@@ -1,5 +1,5 @@
 CC=		gcc
-CFLAGS+=	-Ilocal/include -O0 -g -lpthread
+CFLAGS=		-Ilocal/include -O0 -g -lpthread
 CFLAGS+=	-Wall -Werror -DSET_CPU_AFFINITY
 HEADERS!=	ls src/*.h
 REMOTE=		"rpi:~/demo/"

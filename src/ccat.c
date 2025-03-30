@@ -87,6 +87,7 @@ mediator(void *arg)
         /* get chunk from reader */
         while (ringbuf_deq(&used_chunks, (void **)&c) != RINGBUF_OK)
             pause();
+
         /* end of file marker */
         if (c->len == 0)
             stop = true;

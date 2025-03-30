@@ -21,13 +21,15 @@ theme:
 - Introduce you to a **powerful tool** for your toolbelt.
 - Motivate you to **come talk with me** later.
 
+<!-- pause -->
+
 ## WEAK MEMORY WHAT?
 
 - **Weak memory consistency** is a hardware optimization technique
 - Heavily used on Arm (including Apple M*) and RISC-V
 - Cores aggressively reorder (non-dependent) memory accesses
 - **Good for sequential** code, **dangerous for concurrent** code
-
+- Optimization can be **disabled** by using **memory barriers**
 <!-- end_slide -->
 
 # MAKING `ccat`
@@ -160,9 +162,6 @@ int ringbuf_deq(ringbuf_t* q, void** v) {
 }
 ```
 
-<!-- pause -->
-
-## WILL THIS WORK?
 <!-- end_slide -->
 <!-- column_layout: [1,16,1] -->
 <!-- column: 1 -->
@@ -180,6 +179,10 @@ Let's use our `ccat` implemenation to pipe into `viu` an image of Monalisa:
 
 ![image:width:90%](../../assets/monalisa.jpg)
 
+`viu`: https://github.com/atanunq/viu
+
+<!-- pause -->
+
 <!-- column: 2 -->
 ## ACTUAL RESULT
 
@@ -188,21 +191,6 @@ Let's use our `ccat` implemenation to pipe into `viu` an image of Monalisa:
 <!-- column_layout: [1,16,1] -->
 <!-- column: 1 -->
 
-`viu`: https://github.com/atanunq/viu
-
-<!-- speaker_note:
-
-https://upload.wikimedia.org/wikipedia/commons/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg
-
-
-
--->
-
-
-<!-- end_slide -->
-## WHAT'S THE PROBLEM?
-
---> Let's figure out.
 
 <!-- end_slide -->
 
@@ -279,30 +267,6 @@ Let's decompile:
 - OpenHarmony SDK v5.0.1: https://gitee.com/openharmony
 - Table 2 "acquiring source code" also has pre-built archives
 
-<!--
-https://gitee.com/openharmony/docs/blob/master/en/release-notes/OpenHarmony-v5.0.1-release.md
-```
- █▀▀▀▀▀█ ▄█ ▄▄ ▄▄▀▀█ ▀▀▀▀ ▄ ▄█ █▀▀▀▀▀█
- █ ███ █ ▄█▀█ ▄█▀▀▄▀█▀▀▄█▄▄█ ▀ █ ███ █
- █ ▀▀▀ █ ▄ █ ▀  ▄█ █▀██▄▀█▄▀▄▀ █ ▀▀▀ █
- ▀▀▀▀▀▀▀ ▀ ▀ █ █▄█ ▀ █▄█▄▀ █▄█ ▀▀▀▀▀▀▀
- ▀▀▀█▀▄▀▀▀█▀ ▀▀█▀▄▀ ▄▄ ▀█▀█ ▀▄▀ █ █▄█
- ▄▀ █  ▀ █▀ █▀▀▄▀ ▀█  █▀  ▀█▀██ ███▀▄▀
- ▄█▀█▀ ▀▄█  ▀▄▀▀▀██▄▄█▄▀▄▀▀▀  █▀ ▀▀█▄▀
- ▀▀ ▀ ▄▀█▄ ▀ ▄ ███  ▄███▄ ▀ █▀ ██▄▄▀▀█
- █  ▀▀█▀ ▀▀█ ▀█   █▄▀▄▄▀███▀ █▀▀▄▀▀█▄▀
-  █▀▀█▀▀▀   █▀▀▀█▀▀ ▄██▄▄█ ▀▀▄████ ▀▀█
- ▀ █   ▀██ ▄▀▄█▀▀▀█▄█ ▄█▄ █▀ ▄▀▀▄▀▀▀█▀
-     ██▀ █ ▀ ▄ █▀▄▀▄▄▀▄▄  ▀█▀█▀ ▀▀ ▀▀█
- █ ▀▄ ▀▀ ▄██ ▀▀▀  █ ▄█▄▀▄▀▀▀ ▄▀▀▄▀███▀
- █ ▀▄▀▀▀▄▄▄▀█▀ ▀█  ▀ ███ ▀▀ ██ ▄▄█  ▀█
- ▀  ▀▀ ▀ ▄██▀▄▄ ▀▀██▄▄  ▄ █ ▄█▀▀▀█ ▀
- █▀▀▀▀▀█ ▀▀█ ▄█▀▀▄   ▄██▄▄▀█ █ ▀ █▀ ██
- █ ███ █ █▄█ ▀ ▀  ▀ ▄█ ▀▄ █▀████▀█▀▀█▄
- █ ▀▀▀ █ █▀▀█▀ ▄██▀▄▄█▄▀ ▄ █▀▄ ▄▄   ▀█
- ▀▀▀▀▀▀▀ ▀ ▀▀   ▀▀▀▀▀  ▀ ▀▀▀  ▀▀▀ ▀▀▀▀
-```
--->
 <!-- end_slide -->
 
 # ISSUE 3: RINGBUFFER FAILS ON WEAK MEMORY
@@ -314,14 +278,12 @@ first experiment.
 <!-- column: 0 -->
 
 ## REASON
-> The CPU might optimize the execution by reordering memory
-accesses, practically reverting the fixes we introduced.
+> The CPU might optimize the execution by reordering memory accesses, practically reverting the fixes we introduced.
 
 <!-- column: 1 -->
 ## SOLUTION
 
-> On **every racy access**, we must use **atomic operations** and **memory
-barriers** to disable hardware (and compiler) optimizations.
+> On **every racy access**, we must use **atomic operations** and **memory barriers** to disable hardware (and compiler) optimizations.
 
 <!-- reset_layout -->
 
@@ -375,10 +337,12 @@ Let's build a microbenchmark with 2 threads!
 
 <!-- end_slide -->
 
-<!-- column_layout: [1,1] -->
+<!-- column_layout: [8,8] -->
 <!-- column: 0 -->
 
 # DEVELOPING LOW-LEVEL CONCURRENT CODE
+
+>
 
 ## NEED A CONCURRENT DATASTRUCTURE?
 - Use some **safe library**!
@@ -387,12 +351,16 @@ Let's build a microbenchmark with 2 threads!
 
 <!-- pause -->
 
+>
+
+>
+
 ## REALLY NEED TO WRITE YOURSELF?
 1. Use **atomic operations on every racy access**
     - Even on simple reads and writes
 2. Use the **strongest barriers**
     - Default in `vatomic` and `stdatomic.h`
-3. Check correctness (mostly) ignoring WMM
+3. Check correctness "ignoring" WMM
 4. Relax
 
 <!-- pause -->
@@ -401,23 +369,31 @@ Let's build a microbenchmark with 2 threads!
 
 # OPTIMIZING MEMORY BARRIERS
 
+>
+
 ## NEED TO OPTIMIZE MEMORY BARRIERS?
-- Use a **tool** to optimize for you!
+- Use **tool** to optimize for you!
 - Such tools do exist:
   https://github.com/open-s4c/vsyncer
 
 <!-- pause -->
 
+>
+
+>
+
 ## REALLY NEED TO OPTIMIZE YOURSELF?
-- Use a **tool** to check correctness on WMM!
+- Use **tool** to check WMM correctness!
 - Yeah, such tools do exist:
 
-> **GenMC**:
->  https://github.com/MPI-SWS/genmc
+**GenMC**:
+https://github.com/MPI-SWS/genmc
 
-> **Dartagnan**:
->  https://github.com/hernanponcedeleon/dat3m
+**Dartagnan**:
+https://github.com/hernanponcedeleon/dat3m
 <!-- pause -->
+
+>
 
 ## LET'S TRY DARTAGNAN...
 <!-- end_slide -->
@@ -429,7 +405,7 @@ If you need barrier optimization
 - Correctly implementing with `stdatomic.h` (C11) is **expensive**!
 - Consider **light-weight** models as `VMM`
 
-<!-- column_layout: [1,1] -->
+<!-- column_layout: [8,8] -->
 <!-- column: 0 -->
 <!-- pause -->
 ## VSYNC ATOMICS
@@ -472,7 +448,7 @@ vsyncer: https://github.com/open-s4c/vsyncer
 >
 
 
-<!-- column_layout: [1,1] -->
+<!-- column_layout: [4,3] -->
 <!-- column: 0 -->
 ## THANK YOU 🙏
 
