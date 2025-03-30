@@ -16,6 +16,7 @@ that move the generated `native` directory **inside** this directory, ie,
 
 Open powershell in `demo-ccat` and run
 
+    ohos/env.ps1
     ohos/configure.ps1
 
 That should create the `demo-ccat/build` directory.
@@ -33,6 +34,10 @@ Assuming you have the board properly connected, you can access the board with
 `hdc shell`. This program is also distributed in the toolchain.
 
 Run `ohos/upload.ps1` to upload `ccat`, a run script and an image into the
-`/tmp/demo` directory on the board.
+`/data/demo` directory on the board.
 
-Now, connect with `hdc shell` and call `run.sh`.
+Now, connect with `hdc shell`, then run
+
+    cd /data/demo
+    chmod +x run.sh
+    ./run.sh assets/monalisa.jpg

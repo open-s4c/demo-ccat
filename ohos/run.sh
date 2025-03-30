@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/env sh
 # ------------------------------------------------------------------------------
 # Run test program until input and output differ. Input is a figure.
 #
